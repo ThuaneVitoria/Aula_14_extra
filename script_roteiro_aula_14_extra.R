@@ -62,7 +62,10 @@ dados_aula14 = dados_aula14 |>
  
 # Tarefa 4: Criar o banco de dados BACO_AULA14_RJ, POR MUNICÍPIO, com as seguintes variáveis listadas abaixo. 
 # Variáveis que se referem a medidas de posição e de dispersão devem ser calculadas sem considerar NAs
-
+BACO_AULA14_RJ = dados_aula14 |>
+  group_by(MUNICIPIO)|>
+  summarise(
+  )
 # Atenção: a 1a linha do banco deve ser da UF 33
 # ANO: 2025
 # NIVEL: UF ou MUNICIPIO
