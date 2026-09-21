@@ -3,15 +3,34 @@
 
 # Tarefa 1: Leitura do banco de dados banco 2 = SINASC.csv com o nome de dados_aula14
 # Ler o arquivo, verificar estrutura dos dados e dar uma olhada nos dados
-
+dados_aula14 = read.csv2('banco 2 SINASC.csv')
 # Ao terminar a Tarefa 1 commit com a mensagem " script - tarefa 1" e envie para o repositório Aula_14_Extra
 
-
+library(dplyr)
 # Tarefa 2: Manipulação dos dados
 # Padronizar as categorias SEXO_PROPRIETARIO para Masculino e Feminino
-# Atribuir legendas para a variável TIPO_VEICULO, sendo 1: Carro e 2: Moto
-# Criar uma nova variável em dados_aula14 F_IDADE categorizando as idades em: 22 a 34, 35 a 45
+summary(dados_aula14$SEXO_PROPRIETARIO)
 
+sexo = c( "feminino" = 'Feminino',
+          'FEMININO' = 'Feminino',
+          'masculino'= "Masculino",
+          'MASCULINO' = 'Masculino'
+          
+)
+
+dados_aula14 = dados_aula14|>
+      mutate(SEXO_PROPRIETARIO =recode(SEXO_PROPRIETARIO, !!!sexo))
+
+# Atribuir legendas para a variável TIPO_VEICULO, sendo 1: Carro e 2: Moto
+  
+  dados_aula14$TIPO_VEICULO = factor(dados_aula14$TIPO_VEICULO, levels = c(1,2), labels = c('Carro','Moto'))
+
+# Criar uma nova variável em dados_aula14 F_IDADE categorizando as idades em: 22 a 34, 35 a 45
+  summary(dados_aula14$IDADE_PROPRIETARIO)
+
+  dados_aula14 = dados_aula14|>
+  mutate(F_IDADE = ifelse(IDADE_PROPRIETARIO< 35, "A","B"))
+  
 # Ao terminar a Tarefa 2 commit com a mensagem " script - tarefa 1 a 2" e envie para o repositório Aula_14_Extra
 
 
