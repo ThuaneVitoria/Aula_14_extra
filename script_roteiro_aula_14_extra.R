@@ -6,7 +6,7 @@
 dados_aula14 = read.csv2('banco 2 SINASC.csv')
 # Ao terminar a Tarefa 1 commit com a mensagem " script - tarefa 1" e envie para o repositório Aula_14_Extra
 
-library(dplyr)
+ library(dplyr)
 # Tarefa 2: Manipulação dos dados
 # Padronizar as categorias SEXO_PROPRIETARIO para Masculino e Feminino
 summary(dados_aula14$SEXO_PROPRIETARIO)
@@ -15,8 +15,7 @@ sexo = c( "feminino" = 'Feminino',
           'FEMININO' = 'Feminino',
           'masculino'= "Masculino",
           'MASCULINO' = 'Masculino'
-          
-)
+ )
 
 dados_aula14 = dados_aula14|>
       mutate(SEXO_PROPRIETARIO =recode(SEXO_PROPRIETARIO, !!!sexo))
@@ -35,9 +34,28 @@ dados_aula14 = dados_aula14|>
 
 
 # Tarefa 3: Leitura do banco de dados Tabela_PAM.csv (com o nome tabela_pam) e:
+  tabela_pam = read.csv2('Tabela_PAM.csv')
+  summary(tabela_pam)
+  
 # agregar ao banco dados_aula14 as informações de VALOR_P10 e VALOR_P90
+  dados_aula14 = dados_aula14 |> mutate(id = row_number())
+  tabela_pam = tabela_pam |> mutate(id = row_number())
+  
+  dados_aula14 = dados_aula14|> left_join(tabela_pam|>select(id, VALOR_P10,
+          VALOR_P90), by = 'id')
+  
 # criar a variável PAM (somente quando TIPO_VEICULO = "Carro"), de acordo com IDADE_PROPRIETARIO e SEXO_PROPRIETARIO, com as seguintes categorias:
 # PAM = "PIC", se VALOR_VEICULO < VALOR_P10; "AIC", se VALOR_P10 <= VALOR_VEICULO <= VALOR_P90; "GIC", se VALOR_VEICULO > VALOR_P90
+
+dados_aula14 = dados_aula14 |> 
+  mutate(
+    PAM = case_when(
+      TIPO_VEICULO == "Carro" & VALOR_VEICULO < VALOR_P10 ~ "PIC",
+      TIPO_VEICULO == "Carro" & VALOR_VEICULO >= VALOR_P10 & VALOR_VEICULO <= VALOR_P90 ~ "AIC",
+      TIPO_VEICULO == "Carro" & VALOR_VEICULO > VALOR_P90 ~ "GIC",
+      TRUE ~ NA_character_
+    )
+  )
 
 # Ao terminar a Tarefa 3 commit com a mensagem " script - tarefa 1 a 3" e envie para o repositório Aula_14_Extra
 
